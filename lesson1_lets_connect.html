@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Let's Connect! — Lesson 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a3a5c;
+    --red: #c0392b;
+    --gold: #f39c12;
+    --mint: #1abc9c;
+    --bg: #fdf6ee;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #7f8c8d;
+    --border: #e8ddd0;
+    --correct: #27ae60;
+    --shadow: 0 4px 20px rgba(26,58,92,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ---- HERO ---- */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #2c5f8a 60%, #1a5276 100%);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(243,156,18,0.12);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(26,188,156,0.10);
+    pointer-events: none;
+  }
+  .lesson-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 6vw, 40px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    color: #adc8e0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .meta-chip {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: #d6e8f5;
+    font-weight: 700;
+  }
+
+  /* ---- PROGRESS BAR ---- */
+  .progress-wrap {
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .progress-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--navy);
+    white-space: nowrap;
+    min-width: 80px;
+  }
+  .progress-bar-bg {
+    flex: 1;
+    height: 10px;
+    background: #e8ddd0;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--mint), var(--navy));
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .progress-score {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--navy);
+    min-width: 40px;
+    text-align: right;
+  }
+
+  /* ---- MAIN CONTAINER ---- */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 28px 16px 60px;
+  }
+
+  /* ---- SECTION ---- */
+  .section {
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    width: 34px; height: 34px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900; color: #fff;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+  }
+  .section-subtitle {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ---- CARD ---- */
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    border: 1.5px solid var(--border);
+  }
+
+  /* ---- INFO BOX ---- */
+  .info-box {
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    border-left: 5px solid;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .info-box.blue { background: #eaf3fb; border-color: var(--navy); color: var(--navy); }
+  .info-box.red  { background: #fdecea; border-color: var(--red);  color: #7b1a13; }
+  .info-box.gold { background: #fef9e7; border-color: var(--gold); color: #7d5a00; }
+  .info-box.green{ background: #e9f7ef; border-color: var(--mint); color: #1a5e40; }
+  .info-box strong { font-weight: 800; }
+
+  /* ---- READING TEXT ---- */
+  .reading-text {
+    background: #faf7f3;
+    border: 1.5px solid #e8ddd0;
+    border-radius: 14px;
+    padding: 22px 24px;
+    font-size: 16px;
+    line-height: 1.85;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .reading-text .line-num {
+    font-size: 10px;
+    color: #bbb;
+    font-weight: 700;
+    margin-right: 6px;
+    font-family: monospace;
+  }
+  .reading-text p { margin-bottom: 10px; }
+  .reading-text p:last-child { margin-bottom: 0; }
+
+  /* ---- VOCAB TABLE ---- */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .vocab-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1.5px solid var(--border);
+    font-size: 13px;
+  }
+  .vocab-row.header {
+    background: var(--navy);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .vocab-cell {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+  }
+  .vocab-row.header .vocab-cell { color: #fff; }
+  .vocab-row:not(.header):nth-child(odd)  .vocab-cell { background: #f4f8fc; }
+  .vocab-row:not(.header):nth-child(even) .vocab-cell { background: #fff; }
+  .vocab-cell:nth-child(1) { font-weight: 800; color: var(--navy); border-right: 1.5px solid var(--border); }
+  .vocab-cell:nth-child(2) { border-right: 1.5px solid var(--border); font-size: 12px; color: #555; }
+  .vocab-cell:nth-child(3) { font-size: 12px; color: #555; }
+
+  /* ---- QUESTIONS ---- */
+  .question-block {
+    margin-bottom: 24px;
+  }
+  .question-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .q-num {
+    width: 26px; height: 26px;
+    background: var(--red);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ---- INPUTS ---- */
+  textarea, input[type="text"] {
+    width: 100%;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: #fafafa;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  textarea:focus, input[type="text"]:focus {
+    border-color: var(--navy);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(26,58,92,0.10);
+  }
+  textarea { min-height: 80px; }
+
+  /* ---- CHECKBOX / RADIO ---- */
+  .choice-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .choice-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: #fafafa;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .choice-item:hover { border-color: var(--navy); background: #eaf3fb; }
+  .choice-item input { display: none; }
+  .choice-box {
+    width: 20px; height: 20px;
+    border: 2.5px solid #ccc;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    font-size: 13px;
+    color: #fff;
+  }
+  .choice-item.selected { border-color: var(--navy); background: #eaf3fb; }
+  .choice-item.selected .choice-box { background: var(--navy); border-color: var(--navy); }
+
+  /* ---- YES/NO TOGGLE ---- */
+  .yn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .yn-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2.5px solid var(--border);
+    border-radius: 12px;
+    background: #fafafa;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--muted);
+  }
+  .yn-btn:hover { border-color: var(--navy); }
+  .yn-btn.yes.active { border-color: var(--mint); background: #e9f7ef; color: var(--mint); }
+  .yn-btn.no.active  { border-color: var(--red);  background: #fdecea; color: var(--red); }
+
+  /* ---- TIME WORDS ---- */
+  .time-word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .time-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s, opacity 0.15s;
+  }
+  .time-chip:hover { transform: scale(1.06); }
+  .time-chip.used { opacity: 0.35; }
+
+  .fill-sentence {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    padding: 10px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: #fafafa;
+    cursor: pointer;
+    min-height: 48px;
+    transition: border-color 0.15s;
+  }
+  .fill-sentence:hover { border-color: var(--navy); }
+  .fill-blank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 2px dashed #ccc;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--navy);
+    min-height: 32px;
+    transition: all 0.15s;
+  }
+  .fill-blank.filled { border-style: solid; border-color: var(--mint); background: #e9f7ef; }
+
+  /* ---- SUBMIT BUTTON ---- */
+  .submit-wrap {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--navy), #2c5f8a);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 44px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(26,58,92,0.28);
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.3px;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(26,58,92,0.35); }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* ---- SUCCESS CARD ---- */
+  .result-card {
+    display: none;
+    background: linear-gradient(135deg, #1a5276, #1abc9c);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    color: #fff;
+    margin-top: 32px;
+    box-shadow: 0 12px 40px rgba(26,82,118,0.3);
+  }
+  .result-card.show { display: block; }
+  .result-card .big-emoji { font-size: 56px; margin-bottom: 12px; }
+  .result-card h2 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+  .result-card p { font-size: 15px; opacity: 0.9; }
+  .result-score {
+    font-size: 42px;
+    font-weight: 900;
+    margin: 16px 0 8px;
+    font-family: 'Caveat', cursive;
+  }
+
+  /* ---- HANDWRITTEN NOTE ---- */
+  .caveat {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    color: var(--red);
+    font-weight: 700;
+    display: block;
+    margin: 6px 0 2px;
+  }
+
+  /* ---- DIVIDER ---- */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 28px 0;
+  }
+
+
+
+  /* ---- ANIMATION ---- */
+  @keyframes pop {
+    0%   { transform: scale(0.85); opacity: 0; }
+    70%  { transform: scale(1.06); }
+    100% { transform: scale(1);    opacity: 1; }
+  }
+  .pop { animation: pop 0.4s cubic-bezier(.4,0,.2,1) forwards; }
+
+  /* Stars */
+  .star-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 800;
+    background: #fff3cd;
+    color: #b8860b;
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="lesson-badge">📚 English · Grade 9 · Pre-A Level</div>
+  <h1>Let's <span>Connect!</span></h1>
+  <p>Family, Together, and the World Around Us</p>
+  <div class="hero-meta">
+    <span class="meta-chip">⏱ Lesson 1 of 3</span>
+    <span class="meta-chip">📖 Part One — Reading</span>
+    <span class="meta-chip">✏️ Interactive Worksheet</span>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <span class="progress-label" id="progressLabel">0 / 10</span>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+  <span class="progress-score" id="progressScore">0%</span>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- WARM UP -->
+  <div class="section" id="s0">
+    <div class="section-header">
+      <div class="section-num">🌅</div>
+      <div>
+        <div class="section-title">Warm Up — Before We Start</div>
+        <div class="section-subtitle">Think about your life right now</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="info-box gold">
+        <strong>💬 Think about this:</strong><br>
+        Right now, schools are closed because of the security situation. Many of us are at home — with our families — more than usual. Today we will read about <strong>family</strong> and why it is important.
+      </div>
+
+      <!-- Q0 -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">1</span>
+          <span>Who is at home with you right now? Write their names or relationships. <span class="star-label">⭐ Hebrew/Arabic OK</span></span>
+        </div>
+        <textarea id="q0" placeholder="For example: Mom, my little brother, Grandma..." data-points="1"></textarea>
+      </div>
+
+      <!-- Q1 Yes/No -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">2</span>
+          <span>Are you spending more time at home than usual?</span>
+        </div>
+        <div class="yn-group">
+          <button class="yn-btn yes" onclick="selectYN(this, 'yn1', 'yes')">✅ YES</button>
+          <button class="yn-btn no"  onclick="selectYN(this, 'yn1', 'no')">❌ NO</button>
+        </div>
+        <input type="hidden" id="yn1" data-points="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- VOCABULARY -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">📖</div>
+      <div>
+        <div class="section-title">Vocabulary — New Words</div>
+        <div class="section-subtitle">Learn these words before reading</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="info-box blue">
+        <strong>📌 How to use:</strong> Read each word. Look at the Hebrew translation. Try to say the word aloud.
+      </div>
+      <div class="vocab-grid">
+        <div class="vocab-row header">
+          <div class="vocab-cell">🇬🇧 English</div>
+          <div class="vocab-cell">🇮🇱 Hebrew</div>
+        </div>
+        <div class="vocab-row"><div class="vocab-cell">family</div><div class="vocab-cell">משפחה</div></div>
+        <div class="vocab-row"><div class="vocab-cell">connect</div><div class="vocab-cell">לקשר / קשר</div></div>
+        <div class="vocab-row"><div class="vocab-cell">together</div><div class="vocab-cell">ביחד</div></div>
+        <div class="vocab-row"><div class="vocab-cell">important</div><div class="vocab-cell">חשוב</div></div>
+        <div class="vocab-row"><div class="vocab-cell">spend time</div><div class="vocab-cell">לבלות זמן</div></div>
+        <div class="vocab-row"><div class="vocab-cell">result</div><div class="vocab-cell">תוצאה</div></div>
+        <div class="vocab-row"><div class="vocab-cell">strong</div><div class="vocab-cell">חזק</div></div>
+        <div class="vocab-row"><div class="vocab-cell">used to</div><div class="vocab-cell">פעם / היה נהוג</div></div>
+        <div class="vocab-row"><div class="vocab-cell">habit</div><div class="vocab-cell">הרגל</div></div>
+        <div class="vocab-row"><div class="vocab-cell">tradition</div><div class="vocab-cell">מסורת</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <!-- Vocab Q -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">3</span>
+          <span>Look at the vocabulary. Choose <strong>TWO</strong> words that describe your family right now. Write a short sentence with each word.</span>
+        </div>
+        <textarea id="q_vocab" placeholder="Word 1: _____ — My family is _____ because..." data-points="1" style="min-height:90px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- READING -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">📝</div>
+      <div>
+        <div class="section-title">Reading — Part One</div>
+        <div class="section-subtitle">Read slowly. Every word matters.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="reading-text">
+        <p><span class="line-num">1</span>There's nothing in the world more important than <strong>family</strong>.</p>
+        <p><span class="line-num">2</span>Each family has its own rules, <strong>habits</strong>, and <strong>traditions</strong>.</p>
+        <p><span class="line-num">3</span>These things <strong>connect</strong> family members.</p>
+        <p></p>
+        <p><span class="line-num">4</span>However, today we are all busy working or studying long hours</p>
+        <p><span class="line-num">5</span>and we do not <strong>spend</strong> much quality time with our families.</p>
+        <p><span class="line-num">6</span>The <strong>result</strong> is that family connections are not as</p>
+        <p><span class="line-num">7</span><strong>strong</strong> as they <strong>used to be</strong> in the past.</p>
+        <p></p>
+        <p><span class="line-num">8</span>What can we do about it?</p>
+      </div>
+      <div class="info-box red">
+        <strong>🤔 Think about this as you read:</strong> The text says families are less connected today. But right now, because of the war and school closures, many of us are at home <em>together</em>. Is this different from what the text describes?
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- COMPREHENSION -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">❓</div>
+      <div>
+        <div class="section-title">Part A — Answer the Questions</div>
+        <div class="section-subtitle">About the reading text</div>
+      </div>
+    </div>
+    <div class="card">
+
+      <!-- Q: agree/disagree -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">4</span>
+          <span>"There's nothing in the world more important than family." (line 1)<br>Do you agree? <span class="star-label">⭐ Hebrew/Arabic OK</span></span>
+        </div>
+        <div class="choice-group" id="agree_group">
+          <label class="choice-item" onclick="selectChoice(this, 'agree_group')">
+            <input type="radio" name="agree" value="yes">
+            <span class="choice-box">✓</span>
+            <span>Yes, I agree that … (continue the sentence)</span>
+          </label>
+          <label class="choice-item" onclick="selectChoice(this, 'agree_group')">
+            <input type="radio" name="agree" value="no">
+            <span class="choice-box">✓</span>
+            <span>No, I don't agree. I think that friends are more …</span>
+          </label>
+        </div>
+        <textarea id="q_agree" placeholder="Write your reason here..." style="margin-top:10px;" data-points="1"></textarea>
+      </div>
+
+      <!-- Q: "these things" -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">5</span>
+          <span>"These things connect family members." (line 3) — What things? <span class="star-label">⭐ Hebrew/Arabic OK</span></span>
+        </div>
+        <textarea id="q_things" placeholder="The things that connect family members are..." data-points="1"></textarea>
+      </div>
+
+      <!-- Q: why not quality time -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">6</span>
+          <span>Why don't we spend more quality time with our families today? (lines 4–7)</span>
+        </div>
+        <textarea id="q_why" placeholder="Because we are all busy..." data-points="1"></textarea>
+      </div>
+
+      <!-- Q: result -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">7</span>
+          <span>What is the result? Is this a good or bad thing? Why? <span class="star-label">⭐ Hebrew/Arabic OK</span></span>
+        </div>
+        <textarea id="q_result" placeholder="The result is... I think this is good/bad because..." data-points="1"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PART B: OVER TO YOU -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">🏠</div>
+      <div>
+        <div class="section-title">Part B — Over to You!</div>
+        <div class="section-subtitle">About YOUR life right now</div>
+      </div>
+    </div>
+    <div class="card">
+
+      <!-- Why at home -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">8</span>
+          <span>Why are you at home more than usual? <strong>Tick ALL that apply:</strong></span>
+        </div>
+        <div class="choice-group" id="why_group">
+          <label class="choice-item" onclick="selectMulti(this)">
+            <input type="checkbox" name="why" value="zoom">
+            <span class="choice-box">✓</span>
+            <span>📱 School is on Zoom (online)</span>
+          </label>
+          <label class="choice-item" onclick="selectMulti(this)">
+            <input type="checkbox" name="why" value="missiles">
+            <span class="choice-box">✓</span>
+            <span>🚀 Because of missiles / the security situation</span>
+          </label>
+          <label class="choice-item" onclick="selectMulti(this)">
+            <input type="checkbox" name="why" value="parent">
+            <span class="choice-box">✓</span>
+            <span>🏠 Mom / Dad works from home</span>
+          </label>
+          <label class="choice-item" onclick="selectMulti(this)">
+            <input type="checkbox" name="why" value="grandparent">
+            <span class="choice-box">✓</span>
+            <span>👵 Grandma / Grandpa came to stay with us</span>
+          </label>
+          <label class="choice-item" onclick="selectMulti(this)">
+            <input type="checkbox" name="why" value="other">
+            <span class="choice-box">✓</span>
+            <span>Other reason</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Time words fill-in -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">9</span>
+          <span>Use time words to complete the sentences. <strong>Tap a word, then tap a sentence.</strong></span>
+        </div>
+
+        <div class="info-box gold" style="margin-bottom:14px;">
+          <strong>Time words — tap to select, then tap a sentence:</strong><br>
+          <div class="time-word-bank" id="wordBank" style="margin-top:10px;">
+            <span class="time-chip" onclick="selectWord(this)">always</span>
+            <span class="time-chip" onclick="selectWord(this)">usually</span>
+            <span class="time-chip" onclick="selectWord(this)">sometimes</span>
+            <span class="time-chip" onclick="selectWord(this)">often</span>
+            <span class="time-chip" onclick="selectWord(this)">never</span>
+          </div>
+        </div>
+
+        <div class="fill-sentence" onclick="fillSentence(this, 0)">
+          <span>I</span>
+          <span class="fill-blank" id="blank0">____</span>
+          <span>eat dinner with my family.</span>
+        </div>
+        <div class="fill-sentence" onclick="fillSentence(this, 1)">
+          <span>I</span>
+          <span class="fill-blank" id="blank1">____</span>
+          <span>spend time with my grandparents.</span>
+        </div>
+        <div class="fill-sentence" onclick="fillSentence(this, 2)">
+          <span>My family</span>
+          <span class="fill-blank" id="blank2">____</span>
+          <span>watch TV together.</span>
+        </div>
+        <div class="fill-sentence" onclick="fillSentence(this, 3)">
+          <span>We</span>
+          <span class="fill-blank" id="blank3">____</span>
+          <span>talk about the news.</span>
+        </div>
+      </div>
+
+      <!-- Q: family rule/tradition -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">10</span>
+          <span>Give ONE example of a family rule, habit, or tradition in your family.</span>
+        </div>
+        <textarea id="q_tradition" placeholder="In my family, we always / every week we / one rule is..." data-points="1"></textarea>
+      </div>
+
+      <!-- Bonus: one good thing -->
+      <div class="question-block">
+        <div class="question-label">
+          <span class="q-num">⭐</span>
+          <span><strong>BONUS:</strong> What is ONE good thing about spending more time at home?<br>
+          <span class="caveat">One good thing is that I …</span></span>
+        </div>
+        <textarea id="q_good" placeholder="One good thing is that I spend more time with..." style="min-height:70px;"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="submitWorksheet()">
+      <span>✅</span> Finish & Check My Work
+    </button>
+  </div>
+
+  <!-- RESULT CARD -->
+  <div class="result-card" id="resultCard">
+    <div class="big-emoji" id="resultEmoji">🎉</div>
+    <h2 id="resultTitle">Great job!</h2>
+    <div class="result-score" id="resultScore">8 / 10</div>
+    <p id="resultMsg">You completed the worksheet! Keep going — Lesson 2 is coming soon.</p>
+    <div style="margin-top:20px;">
+      <button onclick="window.print()" style="background:rgba(255,255,255,0.18); border:2px solid rgba(255,255,255,0.4); color:#fff; padding:10px 24px; border-radius:20px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; cursor:pointer; margin-right:10px;">🖨️ Print / Save PDF</button>
+      <button onclick="resetWorksheet()" style="background:rgba(255,255,255,0.18); border:2px solid rgba(255,255,255,0.4); color:#fff; padding:10px 24px; border-radius:20px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; cursor:pointer;">🔄 Try Again</button>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  // ---- INTERSECTION OBSERVER for scroll-in ----
+  const sections = document.querySelectorAll('.section');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  sections.forEach(s => obs.observe(s));
+
+  // ---- PROGRESS ----
+  const TOTAL = 10;
+  function updateProgress() {
+    let filled = 0;
+    // text areas & inputs
+    document.querySelectorAll('textarea[data-points]').forEach(el => { if (el.value.trim().length > 3) filled++; });
+    // yn
+    if (document.getElementById('yn1').value) filled++;
+    // blanks
+    let filledBlanks = 0;
+    for (let i = 0; i < 4; i++) { if (document.getElementById('blank'+i).dataset.word) filledBlanks++; }
+    if (filledBlanks >= 3) filled++;
+    // checkboxes
+    const checked = document.querySelectorAll('input[type=checkbox]:checked');
+    if (checked.length > 0) filled++;
+    // agree choice
+    const agreeChosen = document.querySelector('#agree_group .choice-item.selected');
+    if (agreeChosen) filled++;
+
+    filled = Math.min(filled, TOTAL);
+    const pct = Math.round(filled / TOTAL * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = filled + ' / ' + TOTAL;
+    document.getElementById('progressScore').textContent = pct + '%';
+  }
+  document.querySelectorAll('textarea, input[type=text]').forEach(el => el.addEventListener('input', updateProgress));
+
+  // ---- YES/NO ----
+  function selectYN(btn, fieldId, val) {
+    btn.closest('.yn-group').querySelectorAll('.yn-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(fieldId).value = val;
+    updateProgress();
+  }
+
+  // ---- SINGLE CHOICE ----
+  function selectChoice(item, groupId) {
+    document.querySelectorAll('#' + groupId + ' .choice-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
+    updateProgress();
+  }
+
+  // ---- MULTI CHECKBOX ----
+  function selectMulti(item) {
+    const cb = item.querySelector('input[type=checkbox]');
+    cb.checked = !cb.checked;
+    item.classList.toggle('selected', cb.checked);
+    updateProgress();
+  }
+
+  // ---- WORD BANK (drag-and-drop style via tap) ----
+  let selectedWord = null;
+  function selectWord(chip) {
+    if (chip.classList.contains('used')) return;
+    document.querySelectorAll('.time-chip').forEach(c => c.style.outline = 'none');
+    if (selectedWord === chip) { selectedWord = null; return; }
+    selectedWord = chip;
+    chip.style.outline = '3px solid var(--gold)';
+  }
+  function fillSentence(row, idx) {
+    if (!selectedWord) return;
+    const blank = document.getElementById('blank' + idx);
+    const oldWord = blank.dataset.word;
+    // return old word to bank
+    if (oldWord) {
+      document.querySelectorAll('.time-chip').forEach(c => {
+        if (c.textContent === oldWord) { c.classList.remove('used'); c.style.opacity = ''; }
+      });
+    }
+    blank.textContent = selectedWord.textContent;
+    blank.dataset.word = selectedWord.textContent;
+    blank.classList.add('filled');
+    selectedWord.classList.add('used');
+    selectedWord.style.outline = 'none';
+    selectedWord = null;
+    updateProgress();
+  }
+
+  // ---- SUBMIT ----
+  function submitWorksheet() {
+    let filled = 0;
+    document.querySelectorAll('textarea[data-points]').forEach(el => { if (el.value.trim().length > 3) filled++; });
+    if (document.getElementById('yn1').value) filled++;
+    let fb = 0;
+    for (let i = 0; i < 4; i++) { if (document.getElementById('blank'+i).dataset.word) fb++; }
+    if (fb >= 3) filled++;
+    if (document.querySelectorAll('input[type=checkbox]:checked').length > 0) filled++;
+    if (document.querySelector('#agree_group .choice-item.selected')) filled++;
+    filled = Math.min(filled, TOTAL);
+
+    const pct = Math.round(filled / TOTAL * 100);
+    const card = document.getElementById('resultCard');
+    document.getElementById('resultScore').textContent = filled + ' / ' + TOTAL;
+
+    if (pct >= 80) {
+      document.getElementById('resultEmoji').textContent = '🌟';
+      document.getElementById('resultTitle').textContent = 'Excellent Work!';
+      document.getElementById('resultMsg').textContent = 'You answered most of the questions. Well done! Show your teacher this screen.';
+    } else if (pct >= 50) {
+      document.getElementById('resultEmoji').textContent = '👍';
+      document.getElementById('resultTitle').textContent = 'Good Job!';
+      document.getElementById('resultMsg').textContent = 'You completed the worksheet. Try to go back and fill in the empty questions.';
+    } else {
+      document.getElementById('resultEmoji').textContent = '💪';
+      document.getElementById('resultTitle').textContent = 'Keep Going!';
+      document.getElementById('resultMsg').textContent = 'You started well! Try to go back and answer more questions. You can do it!';
+    }
+
+    card.classList.add('show', 'pop');
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // final progress update
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = filled + ' / ' + TOTAL;
+    document.getElementById('progressScore').textContent = pct + '%';
+  }
+
+  function resetWorksheet() {
+    document.querySelectorAll('textarea').forEach(el => el.value = '');
+    document.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('yn1').value = '';
+    document.querySelectorAll('.choice-item').forEach(i => i.classList.remove('selected'));
+    document.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+    for (let i = 0; i < 4; i++) {
+      const b = document.getElementById('blank'+i);
+      b.textContent = '____'; b.dataset.word = ''; b.classList.remove('filled');
+    }
+    document.querySelectorAll('.time-chip').forEach(c => { c.classList.remove('used'); c.style.opacity = ''; c.style.outline = 'none'; });
+    selectedWord = null;
+    document.getElementById('resultCard').classList.remove('show');
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // initial
+  updateProgress();
+</script>
+</body>
+</html>
