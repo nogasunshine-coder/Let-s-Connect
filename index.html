@@ -16,580 +16,153 @@
     --text: #2c3e50;
     --muted: #7f8c8d;
     --border: #e8ddd0;
-    --correct: #27ae60;
     --shadow: 0 4px 20px rgba(26,58,92,0.10);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 0;
-  }
-
-  /* ---- HERO ---- */
+  /* HERO */
   .hero {
     background: linear-gradient(135deg, var(--navy) 0%, #2c5f8a 60%, #1a5276 100%);
-    padding: 40px 24px 32px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    padding: 40px 24px 32px; text-align: center; position: relative; overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 220px; height: 220px;
-    border-radius: 50%;
-    background: rgba(243,156,18,0.12);
-    pointer-events: none;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -40px; left: -40px;
-    width: 160px; height: 160px;
-    border-radius: 50%;
-    background: rgba(26,188,156,0.10);
-    pointer-events: none;
-  }
-  .lesson-badge {
-    display: inline-block;
-    background: var(--gold);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-bottom: 14px;
-  }
-  .hero h1 {
-    font-size: clamp(26px, 6vw, 40px);
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.15;
-    margin-bottom: 8px;
-  }
-  .hero h1 span { color: var(--gold); }
-  .hero p {
-    color: #adc8e0;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .hero-meta {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  }
+  .hero::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:rgba(243,156,18,0.12); pointer-events:none; }
+  .hero::after  { content:''; position:absolute; bottom:-40px; left:-40px; width:160px; height:160px; border-radius:50%; background:rgba(26,188,156,0.10); pointer-events:none; }
+  .lesson-badge { display:inline-block; background:var(--gold); color:#fff; font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; padding:4px 14px; border-radius:20px; margin-bottom:14px; }
+  .hero h1 { font-size:clamp(26px,6vw,40px); font-weight:900; color:#fff; line-height:1.15; margin-bottom:8px; }
+  .hero h1 span { color:var(--gold); }
+  .hero p { color:#adc8e0; font-size:14px; font-weight:600; }
+  .hero-meta { display:flex; justify-content:center; gap:12px; margin-top:20px; flex-wrap:wrap; }
   .meta-chip {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 12px;
-    color: #d6e8f5;
-    font-weight: 700;
+    background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:20px;
+    padding:6px 16px; font-size:12px; color:#d6e8f5; font-weight:700; text-decoration:none;
+    cursor:pointer; transition:background 0.18s, color 0.18s; display:inline-flex; align-items:center; gap:5px;
   }
+  .meta-chip:hover { background:rgba(255,255,255,0.25); color:#fff; }
+  .meta-chip.active { background:var(--gold); border-color:var(--gold); color:#fff; }
 
-  /* ---- PROGRESS BAR ---- */
-  .progress-wrap {
-    background: #fff;
-    border-bottom: 2px solid var(--border);
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  }
-  .progress-label {
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--navy);
-    white-space: nowrap;
-    min-width: 80px;
-  }
-  .progress-bar-bg {
-    flex: 1;
-    height: 10px;
-    background: #e8ddd0;
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--mint), var(--navy));
-    border-radius: 99px;
-    transition: width 0.6s cubic-bezier(.4,0,.2,1);
-    width: 0%;
-  }
-  .progress-score {
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--navy);
-    min-width: 40px;
-    text-align: right;
-  }
-
-  /* ---- MAIN CONTAINER ---- */
-  .container {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 28px 16px 60px;
-  }
-
-  /* ---- SECTION ---- */
-  .section {
-    margin-bottom: 32px;
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  .section.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .section-num {
-    width: 34px; height: 34px;
-    background: var(--navy);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 900; color: #fff;
-    flex-shrink: 0;
-  }
-  .section-title {
-    font-size: 18px;
-    font-weight: 900;
-    color: var(--navy);
-  }
-  .section-subtitle {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  /* ---- CARD ---- */
-  .card {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: var(--shadow);
-    border: 1.5px solid var(--border);
-  }
-
-  /* ---- INFO BOX ---- */
-  .info-box {
-    border-radius: 14px;
-    padding: 18px 20px;
-    margin-bottom: 20px;
-    border-left: 5px solid;
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .info-box.blue { background: #eaf3fb; border-color: var(--navy); color: var(--navy); }
-  .info-box.red  { background: #fdecea; border-color: var(--red);  color: #7b1a13; }
-  .info-box.gold { background: #fef9e7; border-color: var(--gold); color: #7d5a00; }
-  .info-box.green{ background: #e9f7ef; border-color: var(--mint); color: #1a5e40; }
-  .info-box strong { font-weight: 800; }
-
-  /* ---- READING TEXT ---- */
-  .reading-text {
-    background: #faf7f3;
-    border: 1.5px solid #e8ddd0;
-    border-radius: 14px;
-    padding: 22px 24px;
-    font-size: 16px;
-    line-height: 1.85;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    position: relative;
-  }
-  .reading-text .line-num {
-    font-size: 10px;
-    color: #bbb;
-    font-weight: 700;
-    margin-right: 6px;
-    font-family: monospace;
-  }
-  .reading-text p { margin-bottom: 10px; }
-  .reading-text p:last-child { margin-bottom: 0; }
-
-  /* ---- VOCAB TABLE ---- */
-  .vocab-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  .vocab-row {
-    display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 0;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1.5px solid var(--border);
-    font-size: 13px;
-  }
-  .vocab-row.header {
-    background: var(--navy);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .vocab-cell {
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-  }
-  .vocab-row.header .vocab-cell { color: #fff; }
-  .vocab-row:not(.header):nth-child(odd)  .vocab-cell { background: #f4f8fc; }
-  .vocab-row:not(.header):nth-child(even) .vocab-cell { background: #fff; }
-  .vocab-cell:nth-child(1) { font-weight: 800; color: var(--navy); border-right: 1.5px solid var(--border); }
-  .vocab-cell:nth-child(2) { border-right: 1.5px solid var(--border); font-size: 12px; color: #555; }
-  .vocab-cell:nth-child(3) { font-size: 12px; color: #555; }
-
-  /* ---- QUESTIONS ---- */
-  .question-block {
-    margin-bottom: 24px;
-  }
-  .question-label {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 10px;
-    line-height: 1.5;
-  }
-  .q-num {
-    width: 26px; height: 26px;
-    background: var(--red);
-    border-radius: 8px;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 900;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  /* ---- INPUTS ---- */
-  textarea, input[type="text"] {
-    width: 100%;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px;
-    color: var(--text);
-    background: #fafafa;
-    resize: vertical;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-  }
-  textarea:focus, input[type="text"]:focus {
-    border-color: var(--navy);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(26,58,92,0.10);
-  }
-  textarea { min-height: 80px; }
-
-  /* ---- CHECKBOX / RADIO ---- */
-  .choice-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 4px;
-  }
-  .choice-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 2px solid var(--border);
-    background: #fafafa;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.15s;
-    user-select: none;
-  }
-  .choice-item:hover { border-color: var(--navy); background: #eaf3fb; }
-  .choice-item input { display: none; }
-  .choice-box {
-    width: 20px; height: 20px;
-    border: 2.5px solid #ccc;
-    border-radius: 5px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.15s;
-    font-size: 13px;
-    color: #fff;
-  }
-  .choice-item.selected { border-color: var(--navy); background: #eaf3fb; }
-  .choice-item.selected .choice-box { background: var(--navy); border-color: var(--navy); }
-
-  /* ---- YES/NO TOGGLE ---- */
-  .yn-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 8px;
-  }
-  .yn-btn {
-    flex: 1;
-    padding: 12px;
-    border: 2.5px solid var(--border);
-    border-radius: 12px;
-    background: #fafafa;
-    font-family: 'Nunito', sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.15s;
-    color: var(--muted);
-  }
-  .yn-btn:hover { border-color: var(--navy); }
-  .yn-btn.yes.active { border-color: var(--mint); background: #e9f7ef; color: var(--mint); }
-  .yn-btn.no.active  { border-color: var(--red);  background: #fdecea; color: var(--red); }
-
-  /* ---- TIME WORDS ---- */
-  .time-word-bank {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .time-chip {
-    padding: 6px 14px;
-    border-radius: 20px;
-    background: var(--navy);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 800;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.1s, opacity 0.15s;
-  }
-  .time-chip:hover { transform: scale(1.06); }
-  .time-chip.used { opacity: 0.35; }
-
-  .fill-sentence {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    padding: 10px 14px;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    background: #fafafa;
-    cursor: pointer;
-    min-height: 48px;
-    transition: border-color 0.15s;
-  }
-  .fill-sentence:hover { border-color: var(--navy); }
-  .fill-blank {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 110px;
-    padding: 4px 10px;
-    border-radius: 8px;
-    border: 2px dashed #ccc;
-    background: #fff;
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--navy);
-    min-height: 32px;
-    transition: all 0.15s;
-  }
-  .fill-blank.filled { border-style: solid; border-color: var(--mint); background: #e9f7ef; }
-
-  /* ---- SUBMIT BUTTON ---- */
-  .submit-wrap {
-    text-align: center;
-    margin-top: 40px;
-  }
-  .submit-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: linear-gradient(135deg, var(--navy), #2c5f8a);
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    padding: 16px 44px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 17px;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: 0 8px 24px rgba(26,58,92,0.28);
-    transition: transform 0.15s, box-shadow 0.15s;
-    letter-spacing: 0.3px;
-  }
-  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(26,58,92,0.35); }
-  .submit-btn:active { transform: translateY(0); }
-
-  /* ---- SUCCESS CARD ---- */
-  .result-card {
-    display: none;
-    background: linear-gradient(135deg, #1a5276, #1abc9c);
-    border-radius: 20px;
-    padding: 32px 24px;
-    text-align: center;
-    color: #fff;
-    margin-top: 32px;
-    box-shadow: 0 12px 40px rgba(26,82,118,0.3);
-  }
-  .result-card.show { display: block; }
-  .result-card .big-emoji { font-size: 56px; margin-bottom: 12px; }
-  .result-card h2 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
-  .result-card p { font-size: 15px; opacity: 0.9; }
-  .result-score {
-    font-size: 42px;
-    font-weight: 900;
-    margin: 16px 0 8px;
-    font-family: 'Caveat', cursive;
-  }
-
-  /* ---- HANDWRITTEN NOTE ---- */
-  .caveat {
-    font-family: 'Caveat', cursive;
-    font-size: 20px;
-    color: var(--red);
-    font-weight: 700;
-    display: block;
-    margin: 6px 0 2px;
-  }
-
-  /* ---- DIVIDER ---- */
-  .divider {
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 28px 0;
-  }
-
-
-
-  /* ---- ANIMATION ---- */
-  @keyframes pop {
-    0%   { transform: scale(0.85); opacity: 0; }
-    70%  { transform: scale(1.06); }
-    100% { transform: scale(1);    opacity: 1; }
-  }
-  .pop { animation: pop 0.4s cubic-bezier(.4,0,.2,1) forwards; }
-
-  /* ---- HEBREW INSTRUCTIONS ---- */
-  .he-instructions {
-    background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%);
-    border-radius: 14px;
-    padding: 18px 20px;
-    margin-bottom: 20px;
-    direction: rtl;
-    text-align: right;
-  }
-  .he-instructions .he-title {
-    font-size: 14px;
-    font-weight: 900;
-    color: var(--gold);
-    margin-bottom: 8px;
-    letter-spacing: 0.3px;
-  }
-  .he-instructions ul {
-    list-style: none;
-    padding: 0; margin: 0;
-  }
-  .he-instructions ul li {
-    font-size: 13px;
-    color: #d6e8f5;
-    font-weight: 600;
-    padding: 3px 0;
-    line-height: 1.6;
-  }
-  .he-instructions ul li::before {
-    content: '← ';
-    color: var(--gold);
-    font-weight: 900;
-  }
-
-  /* ---- SAVE/LOAD BAR ---- */
+  /* SAVE BAR */
   .save-bar {
-    background: #fff;
-    border-bottom: 2px solid var(--border);
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
+    background:#fff; border-bottom:2px solid var(--border); padding:10px 20px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center;
+    position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,0.06);
   }
-  .save-bar-label {
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--navy);
-    direction: rtl;
-  }
-  .save-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 16px;
-    border-radius: 20px;
-    border: 2px solid;
-    font-family: 'Nunito', sans-serif;
-    font-size: 12px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .save-btn.download { border-color: var(--mint); color: var(--mint); background: #e9f7ef; }
-  .save-btn.download:hover { background: var(--mint); color: #fff; }
-  .save-btn.load { border-color: var(--gold); color: #b8860b; background: #fef9e7; }
-  .save-btn.load:hover { background: var(--gold); color: #fff; }
-  .save-status {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--mint);
-    display: none;
-  }
-  .save-status.show { display: inline; }
+  .save-bar-label { font-size:12px; font-weight:800; color:var(--navy); direction:rtl; }
+  .save-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 16px; border-radius:20px; border:2px solid; font-family:'Nunito',sans-serif; font-size:12px; font-weight:800; cursor:pointer; transition:all 0.15s; }
+  .save-btn.download { border-color:var(--mint); color:var(--mint); background:#e9f7ef; }
+  .save-btn.download:hover { background:var(--mint); color:#fff; }
+  .save-btn.load { border-color:var(--gold); color:#b8860b; background:#fef9e7; }
+  .save-btn.load:hover { background:var(--gold); color:#fff; }
+  .save-status { font-size:11px; font-weight:700; color:var(--mint); display:none; }
+  .save-status.show { display:inline; }
 
-  /* Stars */
-  .star-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    font-weight: 800;
-    background: #fff3cd;
-    color: #b8860b;
-    border-radius: 6px;
-    padding: 2px 8px;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
+  /* PROGRESS */
+  .progress-wrap { background:#f7f3ee; border-bottom:2px solid var(--border); padding:10px 24px; display:flex; align-items:center; gap:12px; }
+  .progress-label { font-size:12px; font-weight:800; color:var(--navy); white-space:nowrap; min-width:80px; }
+  .progress-bar-bg { flex:1; height:10px; background:#e8ddd0; border-radius:99px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--mint),var(--navy)); border-radius:99px; transition:width 0.6s cubic-bezier(.4,0,.2,1); width:0%; }
+  .progress-score { font-size:13px; font-weight:800; color:var(--navy); min-width:40px; text-align:right; }
+
+  /* CONTAINER */
+  .container { max-width:780px; margin:0 auto; padding:28px 16px 60px; }
+
+  /* SECTION */
+  .section { margin-bottom:32px; opacity:0; transform:translateY(18px); transition:opacity 0.5s ease,transform 0.5s ease; scroll-margin-top:70px; }
+  .section.visible { opacity:1; transform:translateY(0); }
+  .section-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .section-num { width:34px; height:34px; background:var(--navy); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:900; color:#fff; flex-shrink:0; }
+  .section-title { font-size:18px; font-weight:900; color:var(--navy); }
+  .section-subtitle { font-size:12px; font-weight:600; color:var(--muted); margin-top:2px; }
+
+  /* CARD */
+  .card { background:var(--card); border-radius:16px; padding:22px; box-shadow:var(--shadow); border:1.5px solid var(--border); }
+
+  /* INFO BOX */
+  .info-box { border-radius:14px; padding:18px 20px; margin-bottom:20px; border-left:5px solid; font-size:14px; line-height:1.7; }
+  .info-box.blue { background:#eaf3fb; border-color:var(--navy); color:var(--navy); }
+  .info-box.red  { background:#fdecea; border-color:var(--red);  color:#7b1a13; }
+  .info-box.gold { background:#fef9e7; border-color:var(--gold); color:#7d5a00; }
+  .info-box strong { font-weight:800; }
+
+  /* HEBREW INSTRUCTIONS */
+  .he-instructions { background:linear-gradient(135deg,#1a3a5c 0%,#2c5f8a 100%); border-radius:14px; padding:16px 20px; margin-bottom:18px; direction:rtl; text-align:right; }
+  .he-instructions .he-title { font-size:13px; font-weight:900; color:var(--gold); margin-bottom:8px; }
+  .he-instructions ul { list-style:none; padding:0; margin:0; }
+  .he-instructions ul li { font-size:13px; color:#d6e8f5; font-weight:600; padding:2px 0; line-height:1.6; }
+  .he-instructions ul li::before { content:'← '; color:var(--gold); font-weight:900; }
+
+  /* READING */
+  .reading-text { background:#faf7f3; border:1.5px solid #e8ddd0; border-radius:14px; padding:22px 24px; font-size:16px; line-height:1.85; color:#2c3e50; margin-bottom:20px; }
+  .reading-text .line-num { font-size:10px; color:#bbb; font-weight:700; margin-right:6px; font-family:monospace; }
+  .reading-text p { margin-bottom:10px; }
+  .reading-text p:last-child { margin-bottom:0; }
+
+  /* VOCAB */
+  .vocab-grid { display:grid; grid-template-columns:1fr; gap:8px; }
+  .vocab-row { display:grid; grid-template-columns:160px 1fr; border-radius:10px; overflow:hidden; border:1.5px solid var(--border); font-size:13px; }
+  .vocab-row.header { background:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.5px; text-transform:uppercase; }
+  .vocab-row:not(.header):nth-child(odd)  .vocab-cell { background:#f4f8fc; }
+  .vocab-row:not(.header):nth-child(even) .vocab-cell { background:#fff; }
+  .vocab-cell { padding:10px 12px; display:flex; align-items:center; }
+  .vocab-row.header .vocab-cell { color:#fff; }
+  .vocab-cell:nth-child(1) { font-weight:800; color:var(--navy); border-right:1.5px solid var(--border); }
+
+  /* QUESTIONS */
+  .question-block { margin-bottom:24px; }
+  .question-label { display:flex; align-items:flex-start; gap:10px; font-size:14px; font-weight:700; color:var(--text); margin-bottom:10px; line-height:1.5; }
+  .q-num { width:26px; height:26px; background:var(--red); border-radius:8px; color:#fff; font-size:12px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+
+  /* INPUTS */
+  textarea, input[type="text"] { width:100%; border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-family:'Nunito',sans-serif; font-size:14px; color:var(--text); background:#fafafa; resize:vertical; transition:border-color 0.2s,box-shadow 0.2s; outline:none; }
+  textarea:focus, input[type="text"]:focus { border-color:var(--navy); background:#fff; box-shadow:0 0 0 3px rgba(26,58,92,0.10); }
+  textarea { min-height:80px; }
+
+  /* CHOICE */
+  .choice-group { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+  .choice-item { display:flex; align-items:center; gap:10px; cursor:pointer; padding:10px 14px; border-radius:10px; border:2px solid var(--border); background:#fafafa; font-size:14px; font-weight:600; transition:all 0.15s; user-select:none; }
+  .choice-item:hover { border-color:var(--navy); background:#eaf3fb; }
+  .choice-item input { display:none; }
+  .choice-box { width:20px; height:20px; border:2.5px solid #ccc; border-radius:5px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.15s; font-size:13px; color:#fff; }
+  .choice-item.selected { border-color:var(--navy); background:#eaf3fb; }
+  .choice-item.selected .choice-box { background:var(--navy); border-color:var(--navy); }
+
+  /* YES/NO */
+  .yn-group { display:flex; gap:10px; margin-top:8px; }
+  .yn-btn { flex:1; padding:12px; border:2.5px solid var(--border); border-radius:12px; background:#fafafa; font-family:'Nunito',sans-serif; font-size:16px; font-weight:800; cursor:pointer; transition:all 0.15s; color:var(--muted); }
+  .yn-btn:hover { border-color:var(--navy); }
+  .yn-btn.yes.active { border-color:var(--mint); background:#e9f7ef; color:var(--mint); }
+  .yn-btn.no.active  { border-color:var(--red);  background:#fdecea; color:var(--red); }
+
+  /* TIME WORDS */
+  .time-word-bank { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .time-chip { padding:6px 14px; border-radius:20px; background:var(--navy); color:#fff; font-size:12px; font-weight:800; cursor:pointer; user-select:none; transition:transform 0.1s,opacity 0.15s; }
+  .time-chip:hover { transform:scale(1.06); }
+  .time-chip.used { opacity:0.35; }
+  .fill-sentence { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px; font-size:14px; font-weight:600; color:var(--text); padding:10px 14px; border:2px solid var(--border); border-radius:10px; background:#fafafa; cursor:pointer; min-height:48px; transition:border-color 0.15s; }
+  .fill-sentence:hover { border-color:var(--navy); }
+  .fill-blank { display:inline-flex; align-items:center; justify-content:center; min-width:110px; padding:4px 10px; border-radius:8px; border:2px dashed #ccc; background:#fff; font-size:13px; font-weight:800; color:var(--navy); min-height:32px; transition:all 0.15s; }
+  .fill-blank.filled { border-style:solid; border-color:var(--mint); background:#e9f7ef; }
+
+  /* SUBMIT */
+  .submit-wrap { text-align:center; margin-top:40px; }
+  .submit-btn { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,var(--navy),#2c5f8a); color:#fff; border:none; border-radius:50px; padding:16px 44px; font-family:'Nunito',sans-serif; font-size:17px; font-weight:900; cursor:pointer; box-shadow:0 8px 24px rgba(26,58,92,0.28); transition:transform 0.15s,box-shadow 0.15s; }
+  .submit-btn:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(26,58,92,0.35); }
+
+  /* RESULT */
+  .result-card { display:none; background:linear-gradient(135deg,#1a5276,#1abc9c); border-radius:20px; padding:32px 24px; text-align:center; color:#fff; margin-top:32px; box-shadow:0 12px 40px rgba(26,82,118,0.3); }
+  .result-card.show { display:block; }
+  .result-card .big-emoji { font-size:56px; margin-bottom:12px; }
+  .result-card h2 { font-size:24px; font-weight:900; margin-bottom:8px; }
+  .result-card p { font-size:15px; opacity:0.9; }
+  .result-score { font-size:42px; font-weight:900; margin:16px 0 8px; font-family:'Caveat',cursive; }
+
+  /* MISC */
+  .caveat { font-family:'Caveat',cursive; font-size:20px; color:var(--red); font-weight:700; display:block; margin:6px 0 2px; }
+  .divider { height:2px; background:linear-gradient(90deg,transparent,var(--border),transparent); margin:28px 0; }
+  .star-label { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:800; background:#fff3cd; color:#b8860b; border-radius:6px; padding:2px 8px; margin-left:8px; vertical-align:middle; }
+  @keyframes pop { 0%{transform:scale(0.85);opacity:0} 70%{transform:scale(1.06)} 100%{transform:scale(1);opacity:1} }
+  .pop { animation:pop 0.4s cubic-bezier(.4,0,.2,1) forwards; }
 </style>
 </head>
 <body>
@@ -600,13 +173,14 @@
   <h1>Let's <span>Connect!</span></h1>
   <p>Family, Together, and the World Around Us</p>
   <div class="hero-meta">
-    <span class="meta-chip">⏱ Lesson 1 of 3</span>
-    <span class="meta-chip">📖 Part One — Reading</span>
-    <span class="meta-chip">✏️ Interactive Worksheet</span>
+    <a class="meta-chip" href="#s-warmup">⏱ Lesson 1 of 3</a>
+    <a class="meta-chip" href="#s-reading">📖 Part One — Reading</a>
+    <a class="meta-chip" href="#s-questions">✏️ Questions</a>
+    <a class="meta-chip" href="#s-overtoyou">🏠 Over to You</a>
   </div>
 </div>
 
-<!-- SAVE BAR -->
+<!-- SAVE BAR (sticky) -->
 <div class="save-bar">
   <span class="save-bar-label">💾 שמור / טען תשובות:</span>
   <button class="save-btn download" onclick="saveAnswers()">⬇️ שמור תשובות</button>
@@ -620,17 +194,14 @@
 <!-- PROGRESS -->
 <div class="progress-wrap">
   <span class="progress-label" id="progressLabel">0 / 10</span>
-  <div class="progress-bar-bg">
-    <div class="progress-bar-fill" id="progressBar"></div>
-  </div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
   <span class="progress-score" id="progressScore">0%</span>
 </div>
 
-<!-- MAIN -->
 <div class="container">
 
   <!-- WARM UP -->
-  <div class="section" id="s0">
+  <div class="section" id="s-warmup">
     <div class="section-header">
       <div class="section-num">🌅</div>
       <div>
@@ -643,7 +214,7 @@
         <div class="he-title">📋 הוראות — חימום</div>
         <ul>
           <li>קרא/י את הקטע הכחול למטה</li>
-          <li>ענה/י על השאלות באנגלית, עברית, או ערבית</li>
+          <li>ענה/י על השאלות באנגלית או בעברית</li>
           <li>שאלה 1: כתוב/י שמות או יחסי משפחה</li>
           <li>שאלה 2: לחץ/י על YES או NO</li>
         </ul>
@@ -652,27 +223,23 @@
         <strong>💬 Think about this:</strong><br>
         Right now, schools are closed because of the security situation. Many of us are at home — with our families — more than usual. Today we will read about <strong>family</strong> and why it is important.
       </div>
-
-      <!-- Q0 -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">1</span>
-          <span>Who is at home with you right now? Write their names or relationships. <span class="star-label">⭐ Hebrew/Arabic OK</span></span>
+          <span>Who is at home with you right now? Write their names or relationships. <span class="star-label">⭐ עברית בסדר</span></span>
         </div>
         <textarea id="q0" placeholder="For example: Mom, my little brother, Grandma..." data-points="1"></textarea>
       </div>
-
-      <!-- Q1 Yes/No -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">2</span>
           <span>Are you spending more time at home than usual?</span>
         </div>
         <div class="yn-group">
-          <button class="yn-btn yes" onclick="selectYN(this, 'yn1', 'yes')">✅ YES</button>
-          <button class="yn-btn no"  onclick="selectYN(this, 'yn1', 'no')">❌ NO</button>
+          <button class="yn-btn yes" onclick="selectYN(this,'yn1','yes')">✅ YES</button>
+          <button class="yn-btn no"  onclick="selectYN(this,'yn1','no')">❌ NO</button>
         </div>
-        <input type="hidden" id="yn1" data-points="1">
+        <input type="hidden" id="yn1">
       </div>
     </div>
   </div>
@@ -680,7 +247,7 @@
   <div class="divider"></div>
 
   <!-- VOCABULARY -->
-  <div class="section" id="s1">
+  <div class="section" id="s-vocab">
     <div class="section-header">
       <div class="section-num">📖</div>
       <div>
@@ -692,7 +259,7 @@
       <div class="he-instructions">
         <div class="he-title">📋 הוראות — אוצר מילים</div>
         <ul>
-          <li>קרא/י כל מילה באנגלית ואת התרגום</li>
+          <li>קרא/י כל מילה באנגלית ואת התרגום לעברית</li>
           <li>נסה/י לומר את המילה בקול רם</li>
           <li>שאלה 3: בחר/י שתי מילים וכתוב/י משפט עם כל מילה</li>
         </ul>
@@ -716,13 +283,11 @@
         <div class="vocab-row"><div class="vocab-cell">habit</div><div class="vocab-cell">הרגל</div></div>
         <div class="vocab-row"><div class="vocab-cell">tradition</div><div class="vocab-cell">מסורת</div></div>
       </div>
-
       <div class="divider"></div>
-      <!-- Vocab Q -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">3</span>
-          <span>Look at the vocabulary. Choose <strong>TWO</strong> words that describe your family right now. Write a short sentence with each word.</span>
+          <span>Choose <strong>TWO</strong> words from the vocabulary. Write a short sentence with each word.</span>
         </div>
         <textarea id="q_vocab" placeholder="Word 1: _____ — My family is _____ because..." data-points="1" style="min-height:90px;"></textarea>
       </div>
@@ -732,7 +297,7 @@
   <div class="divider"></div>
 
   <!-- READING -->
-  <div class="section" id="s2">
+  <div class="section" id="s-reading">
     <div class="section-header">
       <div class="section-num">📝</div>
       <div>
@@ -746,7 +311,6 @@
         <ul>
           <li>קרא/י את הטקסט לאט — כל מילה חשובה</li>
           <li>המילים המודגשות הן מאוצר המילים שלמדנו</li>
-          <li>לחץ/י על מילה מודגשת אם אתה/את צריך/ה תזכורת</li>
           <li>חשוב/י: האם הטקסט מתאר את המצב שלך עכשיו?</li>
         </ul>
       </div>
@@ -754,12 +318,12 @@
         <p><span class="line-num">1</span>There's nothing in the world more important than <strong>family</strong>.</p>
         <p><span class="line-num">2</span>Each family has its own rules, <strong>habits</strong>, and <strong>traditions</strong>.</p>
         <p><span class="line-num">3</span>These things <strong>connect</strong> family members.</p>
-        <p></p>
+        <p>&nbsp;</p>
         <p><span class="line-num">4</span>However, today we are all busy working or studying long hours</p>
         <p><span class="line-num">5</span>and we do not <strong>spend</strong> much quality time with our families.</p>
         <p><span class="line-num">6</span>The <strong>result</strong> is that family connections are not as</p>
         <p><span class="line-num">7</span><strong>strong</strong> as they <strong>used to be</strong> in the past.</p>
-        <p></p>
+        <p>&nbsp;</p>
         <p><span class="line-num">8</span>What can we do about it?</p>
       </div>
       <div class="info-box red">
@@ -770,8 +334,8 @@
 
   <div class="divider"></div>
 
-  <!-- COMPREHENSION -->
-  <div class="section" id="s3">
+  <!-- PART A: QUESTIONS -->
+  <div class="section" id="s-questions">
     <div class="section-header">
       <div class="section-num">❓</div>
       <div>
@@ -789,38 +353,30 @@
           <li>שאלות 5–7: כתוב/י תשובה קצרה — גם משפט אחד מספיק</li>
         </ul>
       </div>
-
-      <!-- Q: agree/disagree -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">4</span>
-          <span>"There's nothing in the world more important than family." (line 1)<br>Do you agree? <span class="star-label">⭐ Hebrew/Arabic OK</span></span>
+          <span>"There's nothing in the world more important than family." (line 1)<br>Do you agree? <span class="star-label">⭐ עברית בסדר</span></span>
         </div>
         <div class="choice-group" id="agree_group">
-          <label class="choice-item" onclick="selectChoice(this, 'agree_group')">
-            <input type="radio" name="agree" value="yes">
-            <span class="choice-box">✓</span>
+          <label class="choice-item" onclick="selectChoice(this,'agree_group')">
+            <input type="radio" name="agree" value="yes"><span class="choice-box">✓</span>
             <span>Yes, I agree that … (continue the sentence)</span>
           </label>
-          <label class="choice-item" onclick="selectChoice(this, 'agree_group')">
-            <input type="radio" name="agree" value="no">
-            <span class="choice-box">✓</span>
+          <label class="choice-item" onclick="selectChoice(this,'agree_group')">
+            <input type="radio" name="agree" value="no"><span class="choice-box">✓</span>
             <span>No, I don't agree. I think that friends are more …</span>
           </label>
         </div>
         <textarea id="q_agree" placeholder="Write your reason here..." style="margin-top:10px;" data-points="1"></textarea>
       </div>
-
-      <!-- Q: "these things" -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">5</span>
-          <span>"These things connect family members." (line 3) — What things? <span class="star-label">⭐ Hebrew/Arabic OK</span></span>
+          <span>"These things connect family members." (line 3) — What things? <span class="star-label">⭐ עברית בסדר</span></span>
         </div>
         <textarea id="q_things" placeholder="The things that connect family members are..." data-points="1"></textarea>
       </div>
-
-      <!-- Q: why not quality time -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">6</span>
@@ -828,12 +384,10 @@
         </div>
         <textarea id="q_why" placeholder="Because we are all busy..." data-points="1"></textarea>
       </div>
-
-      <!-- Q: result -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">7</span>
-          <span>What is the result? Is this a good or bad thing? Why? <span class="star-label">⭐ Hebrew/Arabic OK</span></span>
+          <span>What is the result? Is this a good or bad thing? Why? <span class="star-label">⭐ עברית בסדר</span></span>
         </div>
         <textarea id="q_result" placeholder="The result is... I think this is good/bad because..." data-points="1"></textarea>
       </div>
@@ -843,7 +397,7 @@
   <div class="divider"></div>
 
   <!-- PART B: OVER TO YOU -->
-  <div class="section" id="s4">
+  <div class="section" id="s-overtoyou">
     <div class="section-header">
       <div class="section-num">🏠</div>
       <div>
@@ -861,52 +415,27 @@
           <li>שאלת בונוס ⭐: אופציונלי — כתוב/י דבר אחד טוב שקרה בגלל הסגר</li>
         </ul>
       </div>
-
-      <!-- Why at home -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">8</span>
           <span>Why are you at home more than usual? <strong>Tick ALL that apply:</strong></span>
         </div>
-        <div class="choice-group" id="why_group">
-          <label class="choice-item" onclick="selectMulti(this)">
-            <input type="checkbox" name="why" value="zoom">
-            <span class="choice-box">✓</span>
-            <span>📱 School is on Zoom (online)</span>
-          </label>
-          <label class="choice-item" onclick="selectMulti(this)">
-            <input type="checkbox" name="why" value="missiles">
-            <span class="choice-box">✓</span>
-            <span>🚀 Because of missiles / the security situation</span>
-          </label>
-          <label class="choice-item" onclick="selectMulti(this)">
-            <input type="checkbox" name="why" value="parent">
-            <span class="choice-box">✓</span>
-            <span>🏠 Mom / Dad works from home</span>
-          </label>
-          <label class="choice-item" onclick="selectMulti(this)">
-            <input type="checkbox" name="why" value="grandparent">
-            <span class="choice-box">✓</span>
-            <span>👵 Grandma / Grandpa came to stay with us</span>
-          </label>
-          <label class="choice-item" onclick="selectMulti(this)">
-            <input type="checkbox" name="why" value="other">
-            <span class="choice-box">✓</span>
-            <span>Other reason</span>
-          </label>
+        <div class="choice-group">
+          <label class="choice-item" onclick="selectMulti(this)"><input type="checkbox" name="why" value="zoom"><span class="choice-box">✓</span><span>📱 School is on Zoom (online)</span></label>
+          <label class="choice-item" onclick="selectMulti(this)"><input type="checkbox" name="why" value="missiles"><span class="choice-box">✓</span><span>🚀 Because of missiles / the security situation</span></label>
+          <label class="choice-item" onclick="selectMulti(this)"><input type="checkbox" name="why" value="parent"><span class="choice-box">✓</span><span>🏠 Mom / Dad works from home</span></label>
+          <label class="choice-item" onclick="selectMulti(this)"><input type="checkbox" name="why" value="grandparent"><span class="choice-box">✓</span><span>👵 Grandma / Grandpa came to stay with us</span></label>
+          <label class="choice-item" onclick="selectMulti(this)"><input type="checkbox" name="why" value="other"><span class="choice-box">✓</span><span>Other reason</span></label>
         </div>
       </div>
-
-      <!-- Time words fill-in -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">9</span>
           <span>Use time words to complete the sentences. <strong>Tap a word, then tap a sentence.</strong></span>
         </div>
-
         <div class="info-box gold" style="margin-bottom:14px;">
-          <strong>Time words — tap to select, then tap a sentence:</strong><br>
-          <div class="time-word-bank" id="wordBank" style="margin-top:10px;">
+          <strong>מילות זמן — לחץ/י על מילה ואז על המשפט:</strong>
+          <div class="time-word-bank" style="margin-top:10px;">
             <span class="time-chip" onclick="selectWord(this)">always</span>
             <span class="time-chip" onclick="selectWord(this)">usually</span>
             <span class="time-chip" onclick="selectWord(this)">sometimes</span>
@@ -914,30 +443,11 @@
             <span class="time-chip" onclick="selectWord(this)">never</span>
           </div>
         </div>
-
-        <div class="fill-sentence" onclick="fillSentence(this, 0)">
-          <span>I</span>
-          <span class="fill-blank" id="blank0">____</span>
-          <span>eat dinner with my family.</span>
-        </div>
-        <div class="fill-sentence" onclick="fillSentence(this, 1)">
-          <span>I</span>
-          <span class="fill-blank" id="blank1">____</span>
-          <span>spend time with my grandparents.</span>
-        </div>
-        <div class="fill-sentence" onclick="fillSentence(this, 2)">
-          <span>My family</span>
-          <span class="fill-blank" id="blank2">____</span>
-          <span>watch TV together.</span>
-        </div>
-        <div class="fill-sentence" onclick="fillSentence(this, 3)">
-          <span>We</span>
-          <span class="fill-blank" id="blank3">____</span>
-          <span>talk about the news.</span>
-        </div>
+        <div class="fill-sentence" onclick="fillSentence(this,0)"><span>I</span><span class="fill-blank" id="blank0">____</span><span>eat dinner with my family.</span></div>
+        <div class="fill-sentence" onclick="fillSentence(this,1)"><span>I</span><span class="fill-blank" id="blank1">____</span><span>spend time with my grandparents.</span></div>
+        <div class="fill-sentence" onclick="fillSentence(this,2)"><span>My family</span><span class="fill-blank" id="blank2">____</span><span>watch TV together.</span></div>
+        <div class="fill-sentence" onclick="fillSentence(this,3)"><span>We</span><span class="fill-blank" id="blank3">____</span><span>talk about the news.</span></div>
       </div>
-
-      <!-- Q: family rule/tradition -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">10</span>
@@ -945,8 +455,6 @@
         </div>
         <textarea id="q_tradition" placeholder="In my family, we always / every week we / one rule is..." data-points="1"></textarea>
       </div>
-
-      <!-- Bonus: one good thing -->
       <div class="question-block">
         <div class="question-label">
           <span class="q-num">⭐</span>
@@ -955,195 +463,78 @@
         </div>
         <textarea id="q_good" placeholder="One good thing is that I spend more time with..." style="min-height:70px;"></textarea>
       </div>
-
     </div>
   </div>
 
   <!-- SUBMIT -->
   <div class="submit-wrap">
-    <button class="submit-btn" onclick="submitWorksheet()">
-      <span>✅</span> Finish & Check My Work
-    </button>
+    <button class="submit-btn" onclick="submitWorksheet()"><span>✅</span> Finish & Check My Work</button>
   </div>
 
-  <!-- RESULT CARD -->
+  <!-- RESULT -->
   <div class="result-card" id="resultCard">
     <div class="big-emoji" id="resultEmoji">🎉</div>
     <h2 id="resultTitle">Great job!</h2>
     <div class="result-score" id="resultScore">8 / 10</div>
-    <p id="resultMsg">You completed the worksheet! Keep going — Lesson 2 is coming soon.</p>
+    <p id="resultMsg">You completed the worksheet!</p>
     <div style="margin-top:20px;">
-      <button onclick="window.print()" style="background:rgba(255,255,255,0.18); border:2px solid rgba(255,255,255,0.4); color:#fff; padding:10px 24px; border-radius:20px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; cursor:pointer; margin-right:10px;">🖨️ Print / Save PDF</button>
-      <button onclick="resetWorksheet()" style="background:rgba(255,255,255,0.18); border:2px solid rgba(255,255,255,0.4); color:#fff; padding:10px 24px; border-radius:20px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; cursor:pointer;">🔄 Try Again</button>
+      <button onclick="window.print()" style="background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.4);color:#fff;padding:10px 24px;border-radius:20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;margin-right:10px;">🖨️ הדפס / PDF</button>
+      <button onclick="resetWorksheet()" style="background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.4);color:#fff;padding:10px 24px;border-radius:20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;">🔄 התחל מחדש</button>
     </div>
   </div>
 
-</div><!-- /container -->
+</div>
 
 <script>
-  // ---- INTERSECTION OBSERVER for scroll-in ----
-  const sections = document.querySelectorAll('.section');
+  // SCROLL-IN ANIMATION
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
-  sections.forEach(s => obs.observe(s));
+  document.querySelectorAll('.section').forEach(s => obs.observe(s));
 
-  // ---- COLLECT ALL ANSWERS ----
-  function collectAnswers() {
-    const data = {};
-    // textareas
-    document.querySelectorAll('textarea').forEach(el => { if (el.id) data[el.id] = el.value; });
-    // yn
-    data['yn1'] = document.getElementById('yn1').value;
-    // blanks
-    for (let i = 0; i < 4; i++) {
-      data['blank' + i] = document.getElementById('blank' + i).dataset.word || '';
-    }
-    // checkboxes
-    data['checkboxes'] = [];
-    document.querySelectorAll('input[type=checkbox]').forEach(cb => {
-      if (cb.checked) data['checkboxes'].push(cb.value);
-    });
-    // agree radio
-    const agreeSelected = document.querySelector('#agree_group .choice-item.selected');
-    data['agree_choice'] = agreeSelected ? agreeSelected.querySelector('input').value : '';
-    return data;
-  }
-
-  // ---- RESTORE ALL ANSWERS ----
-  function restoreAnswers(data) {
-    if (!data) return;
-    // textareas
-    document.querySelectorAll('textarea').forEach(el => {
-      if (el.id && data[el.id] !== undefined) el.value = data[el.id];
-    });
-    // yn
-    if (data['yn1']) {
-      document.querySelectorAll('.yn-btn').forEach(b => {
-        if ((data['yn1'] === 'yes' && b.classList.contains('yes')) ||
-            (data['yn1'] === 'no'  && b.classList.contains('no'))) b.classList.add('active');
-      });
-      document.getElementById('yn1').value = data['yn1'];
-    }
-    // blanks
-    for (let i = 0; i < 4; i++) {
-      const word = data['blank' + i];
-      if (word) {
-        const blank = document.getElementById('blank' + i);
-        blank.textContent = word;
-        blank.dataset.word = word;
-        blank.classList.add('filled');
-        document.querySelectorAll('.time-chip').forEach(c => {
-          if (c.textContent === word) { c.classList.add('used'); }
-        });
+  // HIGHLIGHT ACTIVE CHIP based on which section is in view
+  const chipTargets = { 's-warmup':0, 's-vocab':0, 's-reading':1, 's-questions':2, 's-overtoyou':3 };
+  const chips = document.querySelectorAll('.meta-chip');
+  const chipObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio >= 0.3) {
+        chips.forEach(c => c.classList.remove('active'));
+        const idx = chipTargets[e.target.id];
+        if (idx !== undefined) chips[idx].classList.add('active');
       }
-    }
-    // checkboxes
-    if (data['checkboxes']) {
-      document.querySelectorAll('input[type=checkbox]').forEach(cb => {
-        if (data['checkboxes'].includes(cb.value)) {
-          cb.checked = true;
-          cb.closest('.choice-item').classList.add('selected');
-        }
-      });
-    }
-    // agree radio
-    if (data['agree_choice']) {
-      document.querySelectorAll('#agree_group .choice-item').forEach(item => {
-        if (item.querySelector('input').value === data['agree_choice']) {
-          item.classList.add('selected');
-        }
-      });
-    }
-    updateProgress();
-  }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.section').forEach(s => chipObs.observe(s));
 
-  // ---- AUTO-SAVE TO LOCALSTORAGE ----
-  function autoSave() {
-    try {
-      localStorage.setItem('letsconnect_lesson1', JSON.stringify(collectAnswers()));
-    } catch(e) {}
-  }
-  function autoLoad() {
-    try {
-      const saved = localStorage.getItem('letsconnect_lesson1');
-      if (saved) restoreAnswers(JSON.parse(saved));
-    } catch(e) {}
-  }
-
-  // ---- MANUAL SAVE (download JSON file) ----
-  function saveAnswers() {
-    autoSave();
-    const data = collectAnswers();
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'my_answers_lesson1.json';
-    a.click();
-    const s = document.getElementById('saveStatus');
-    s.textContent = '✅ הקובץ הורד!';
-    s.classList.add('show');
-    setTimeout(() => s.classList.remove('show'), 3000);
-  }
-
-  // ---- MANUAL LOAD (upload JSON file) ----
-  function loadAnswers(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      try {
-        const data = JSON.parse(e.target.result);
-        restoreAnswers(data);
-        const s = document.getElementById('saveStatus');
-        s.textContent = '✅ התשובות נטענו!';
-        s.classList.add('show');
-        setTimeout(() => s.classList.remove('show'), 3000);
-      } catch(err) {
-        alert('שגיאה בטעינת הקובץ. בדוק/י שהקובץ תקין.');
-      }
-    };
-    reader.readAsText(file);
-    event.target.value = '';
-  }
-
-  // ---- PROGRESS ----
+  // PROGRESS
   const TOTAL = 10;
   function updateProgress() {
     let filled = 0;
     document.querySelectorAll('textarea[data-points]').forEach(el => { if (el.value.trim().length > 3) filled++; });
     if (document.getElementById('yn1').value) filled++;
-    let filledBlanks = 0;
-    for (let i = 0; i < 4; i++) { if (document.getElementById('blank'+i).dataset.word) filledBlanks++; }
-    if (filledBlanks >= 3) filled++;
+    let fb = 0; for (let i=0;i<4;i++) { if (document.getElementById('blank'+i).dataset.word) fb++; }
+    if (fb >= 3) filled++;
     if (document.querySelectorAll('input[type=checkbox]:checked').length > 0) filled++;
     if (document.querySelector('#agree_group .choice-item.selected')) filled++;
     filled = Math.min(filled, TOTAL);
-    const pct = Math.round(filled / TOTAL * 100);
-    document.getElementById('progressBar').style.width = pct + '%';
-    document.getElementById('progressLabel').textContent = filled + ' / ' + TOTAL;
-    document.getElementById('progressScore').textContent = pct + '%';
+    const pct = Math.round(filled/TOTAL*100);
+    document.getElementById('progressBar').style.width = pct+'%';
+    document.getElementById('progressLabel').textContent = filled+' / '+TOTAL;
+    document.getElementById('progressScore').textContent = pct+'%';
   }
-  document.querySelectorAll('textarea, input[type=text]').forEach(el => {
-    el.addEventListener('input', () => { updateProgress(); autoSave(); });
-  });
+  document.querySelectorAll('textarea,input[type=text]').forEach(el => el.addEventListener('input', () => { updateProgress(); autoSave(); }));
 
-  // ---- YES/NO ----
   function selectYN(btn, fieldId, val) {
     btn.closest('.yn-group').querySelectorAll('.yn-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(fieldId).value = val;
     updateProgress(); autoSave();
   }
-
-  // ---- SINGLE CHOICE ----
   function selectChoice(item, groupId) {
-    document.querySelectorAll('#' + groupId + ' .choice-item').forEach(i => i.classList.remove('selected'));
+    document.querySelectorAll('#'+groupId+' .choice-item').forEach(i => i.classList.remove('selected'));
     item.classList.add('selected');
     updateProgress(); autoSave();
   }
-
-  // ---- MULTI CHECKBOX ----
   function selectMulti(item) {
     const cb = item.querySelector('input[type=checkbox]');
     cb.checked = !cb.checked;
@@ -1151,24 +542,19 @@
     updateProgress(); autoSave();
   }
 
-  // ---- WORD BANK ----
   let selectedWord = null;
   function selectWord(chip) {
     if (chip.classList.contains('used')) return;
-    document.querySelectorAll('.time-chip').forEach(c => c.style.outline = 'none');
-    if (selectedWord === chip) { selectedWord = null; return; }
+    document.querySelectorAll('.time-chip').forEach(c => c.style.outline='none');
+    if (selectedWord === chip) { selectedWord=null; return; }
     selectedWord = chip;
-    chip.style.outline = '3px solid var(--gold)';
+    chip.style.outline = '3px solid #f39c12';
   }
   function fillSentence(row, idx) {
     if (!selectedWord) return;
-    const blank = document.getElementById('blank' + idx);
+    const blank = document.getElementById('blank'+idx);
     const oldWord = blank.dataset.word;
-    if (oldWord) {
-      document.querySelectorAll('.time-chip').forEach(c => {
-        if (c.textContent === oldWord) { c.classList.remove('used'); c.style.opacity = ''; }
-      });
-    }
+    if (oldWord) { document.querySelectorAll('.time-chip').forEach(c => { if (c.textContent===oldWord){c.classList.remove('used');c.style.opacity='';} }); }
     blank.textContent = selectedWord.textContent;
     blank.dataset.word = selectedWord.textContent;
     blank.classList.add('filled');
@@ -1178,60 +564,88 @@
     updateProgress(); autoSave();
   }
 
-  // ---- SUBMIT ----
-  function submitWorksheet() {
-    let filled = 0;
-    document.querySelectorAll('textarea[data-points]').forEach(el => { if (el.value.trim().length > 3) filled++; });
-    if (document.getElementById('yn1').value) filled++;
-    let fb = 0;
-    for (let i = 0; i < 4; i++) { if (document.getElementById('blank'+i).dataset.word) fb++; }
-    if (fb >= 3) filled++;
-    if (document.querySelectorAll('input[type=checkbox]:checked').length > 0) filled++;
-    if (document.querySelector('#agree_group .choice-item.selected')) filled++;
-    filled = Math.min(filled, TOTAL);
-    const pct = Math.round(filled / TOTAL * 100);
-    const card = document.getElementById('resultCard');
-    document.getElementById('resultScore').textContent = filled + ' / ' + TOTAL;
-    if (pct >= 80) {
-      document.getElementById('resultEmoji').textContent = '🌟';
-      document.getElementById('resultTitle').textContent = 'Excellent Work! / עבודה מצוינת!';
-      document.getElementById('resultMsg').textContent = 'You answered most of the questions. Well done! הראה/י למורה את המסך הזה.';
-    } else if (pct >= 50) {
-      document.getElementById('resultEmoji').textContent = '👍';
-      document.getElementById('resultTitle').textContent = 'Good Job! / כל הכבוד!';
-      document.getElementById('resultMsg').textContent = 'You completed the worksheet. חזור/י לשאלות הריקות ונסה/י למלא אותן.';
-    } else {
-      document.getElementById('resultEmoji').textContent = '💪';
-      document.getElementById('resultTitle').textContent = 'Keep Going! / אל תוותר/י!';
-      document.getElementById('resultMsg').textContent = 'התחלת טוב! חזור/י ונסה/י לענות על עוד שאלות. אתה/את יכול/ה!';
+  function collectAnswers() {
+    const d = {};
+    document.querySelectorAll('textarea').forEach(el => { if (el.id) d[el.id]=el.value; });
+    d['yn1'] = document.getElementById('yn1').value;
+    for (let i=0;i<4;i++) d['blank'+i] = document.getElementById('blank'+i).dataset.word||'';
+    d['checkboxes'] = [];
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => { if (cb.checked) d['checkboxes'].push(cb.value); });
+    const ag = document.querySelector('#agree_group .choice-item.selected');
+    d['agree_choice'] = ag ? ag.querySelector('input').value : '';
+    return d;
+  }
+  function restoreAnswers(d) {
+    if (!d) return;
+    document.querySelectorAll('textarea').forEach(el => { if (el.id && d[el.id]!==undefined) el.value=d[el.id]; });
+    if (d['yn1']) {
+      document.querySelectorAll('.yn-btn').forEach(b => { if ((d['yn1']==='yes'&&b.classList.contains('yes'))||(d['yn1']==='no'&&b.classList.contains('no'))) b.classList.add('active'); });
+      document.getElementById('yn1').value = d['yn1'];
     }
-    card.classList.add('show', 'pop');
-    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    document.getElementById('progressBar').style.width = pct + '%';
-    document.getElementById('progressLabel').textContent = filled + ' / ' + TOTAL;
-    document.getElementById('progressScore').textContent = pct + '%';
+    for (let i=0;i<4;i++) {
+      const w=d['blank'+i]; if (w) {
+        const bl=document.getElementById('blank'+i); bl.textContent=w; bl.dataset.word=w; bl.classList.add('filled');
+        document.querySelectorAll('.time-chip').forEach(c => { if (c.textContent===w) c.classList.add('used'); });
+      }
+    }
+    if (d['checkboxes']) { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if (d['checkboxes'].includes(cb.value)){cb.checked=true;cb.closest('.choice-item').classList.add('selected');} }); }
+    if (d['agree_choice']) { document.querySelectorAll('#agree_group .choice-item').forEach(item => { if (item.querySelector('input').value===d['agree_choice']) item.classList.add('selected'); }); }
+    updateProgress();
+  }
+
+  function autoSave() { try { localStorage.setItem('letsconnect_lesson1', JSON.stringify(collectAnswers())); } catch(e){} }
+  function autoLoad() { try { const s=localStorage.getItem('letsconnect_lesson1'); if(s) restoreAnswers(JSON.parse(s)); } catch(e){} }
+
+  function saveAnswers() {
     autoSave();
+    const blob = new Blob([JSON.stringify(collectAnswers(),null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='my_answers_lesson1.json'; a.click();
+    const s=document.getElementById('saveStatus'); s.textContent='✅ הקובץ הורד!'; s.classList.add('show');
+    setTimeout(()=>s.classList.remove('show'),3000);
+  }
+  function loadAnswers(event) {
+    const file=event.target.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=e=>{
+      try { restoreAnswers(JSON.parse(e.target.result)); const s=document.getElementById('saveStatus'); s.textContent='✅ התשובות נטענו!'; s.classList.add('show'); setTimeout(()=>s.classList.remove('show'),3000); }
+      catch(err){ alert('שגיאה בטעינת הקובץ.'); }
+    };
+    reader.readAsText(file); event.target.value='';
+  }
+
+  function submitWorksheet() {
+    let filled=0;
+    document.querySelectorAll('textarea[data-points]').forEach(el=>{if(el.value.trim().length>3)filled++;});
+    if(document.getElementById('yn1').value) filled++;
+    let fb=0; for(let i=0;i<4;i++){if(document.getElementById('blank'+i).dataset.word)fb++;} if(fb>=3)filled++;
+    if(document.querySelectorAll('input[type=checkbox]:checked').length>0) filled++;
+    if(document.querySelector('#agree_group .choice-item.selected')) filled++;
+    filled=Math.min(filled,TOTAL);
+    const pct=Math.round(filled/TOTAL*100);
+    document.getElementById('resultScore').textContent=filled+' / '+TOTAL;
+    if(pct>=80){document.getElementById('resultEmoji').textContent='🌟';document.getElementById('resultTitle').textContent='Excellent Work! / עבודה מצוינת!';document.getElementById('resultMsg').textContent='You answered most of the questions. הראה/י למורה את המסך הזה.';}
+    else if(pct>=50){document.getElementById('resultEmoji').textContent='👍';document.getElementById('resultTitle').textContent='Good Job! / כל הכבוד!';document.getElementById('resultMsg').textContent='חזור/י לשאלות הריקות ונסה/י למלא אותן.';}
+    else{document.getElementById('resultEmoji').textContent='💪';document.getElementById('resultTitle').textContent='Keep Going! / אל תוותר/י!';document.getElementById('resultMsg').textContent='התחלת טוב! חזור/י ונסה/י לענות על עוד שאלות.';}
+    const card=document.getElementById('resultCard'); card.classList.add('show','pop');
+    card.scrollIntoView({behavior:'smooth',block:'center'});
+    updateProgress(); autoSave();
   }
 
   function resetWorksheet() {
-    document.querySelectorAll('textarea').forEach(el => el.value = '');
-    document.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('yn1').value = '';
-    document.querySelectorAll('.choice-item').forEach(i => i.classList.remove('selected'));
-    document.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
-    for (let i = 0; i < 4; i++) {
-      const b = document.getElementById('blank'+i);
-      b.textContent = '____'; b.dataset.word = ''; b.classList.remove('filled');
-    }
-    document.querySelectorAll('.time-chip').forEach(c => { c.classList.remove('used'); c.style.opacity = ''; c.style.outline = 'none'; });
-    selectedWord = null;
+    document.querySelectorAll('textarea').forEach(el=>el.value='');
+    document.querySelectorAll('.yn-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('yn1').value='';
+    document.querySelectorAll('.choice-item').forEach(i=>i.classList.remove('selected'));
+    document.querySelectorAll('input[type=checkbox]').forEach(c=>c.checked=false);
+    for(let i=0;i<4;i++){const b=document.getElementById('blank'+i);b.textContent='____';b.dataset.word='';b.classList.remove('filled');}
+    document.querySelectorAll('.time-chip').forEach(c=>{c.classList.remove('used');c.style.opacity='';c.style.outline='none';});
+    selectedWord=null;
     document.getElementById('resultCard').classList.remove('show');
-    try { localStorage.removeItem('letsconnect_lesson1'); } catch(e) {}
+    try{localStorage.removeItem('letsconnect_lesson1');}catch(e){}
     updateProgress();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top:0,behavior:'smooth'});
   }
 
-  // ---- INIT: auto-load from localStorage ----
   autoLoad();
   updateProgress();
 </script>
