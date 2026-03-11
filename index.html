@@ -501,6 +501,81 @@
   }
   .pop { animation: pop 0.4s cubic-bezier(.4,0,.2,1) forwards; }
 
+  /* ---- HEBREW INSTRUCTIONS ---- */
+  .he-instructions {
+    background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    direction: rtl;
+    text-align: right;
+  }
+  .he-instructions .he-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+  .he-instructions ul {
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .he-instructions ul li {
+    font-size: 13px;
+    color: #d6e8f5;
+    font-weight: 600;
+    padding: 3px 0;
+    line-height: 1.6;
+  }
+  .he-instructions ul li::before {
+    content: '← ';
+    color: var(--gold);
+    font-weight: 900;
+  }
+
+  /* ---- SAVE/LOAD BAR ---- */
+  .save-bar {
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .save-bar-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--navy);
+    direction: rtl;
+  }
+  .save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 2px solid;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .save-btn.download { border-color: var(--mint); color: var(--mint); background: #e9f7ef; }
+  .save-btn.download:hover { background: var(--mint); color: #fff; }
+  .save-btn.load { border-color: var(--gold); color: #b8860b; background: #fef9e7; }
+  .save-btn.load:hover { background: var(--gold); color: #fff; }
+  .save-status {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mint);
+    display: none;
+  }
+  .save-status.show { display: inline; }
+
   /* Stars */
   .star-label {
     display: inline-flex;
@@ -531,6 +606,17 @@
   </div>
 </div>
 
+<!-- SAVE BAR -->
+<div class="save-bar">
+  <span class="save-bar-label">💾 שמור / טען תשובות:</span>
+  <button class="save-btn download" onclick="saveAnswers()">⬇️ שמור תשובות</button>
+  <label class="save-btn load" style="cursor:pointer;">
+    ⬆️ טען תשובות
+    <input type="file" id="loadFile" accept=".json" style="display:none;" onchange="loadAnswers(event)">
+  </label>
+  <span class="save-status" id="saveStatus">✅ נשמר!</span>
+</div>
+
 <!-- PROGRESS -->
 <div class="progress-wrap">
   <span class="progress-label" id="progressLabel">0 / 10</span>
@@ -553,6 +639,15 @@
       </div>
     </div>
     <div class="card">
+      <div class="he-instructions">
+        <div class="he-title">📋 הוראות — חימום</div>
+        <ul>
+          <li>קרא/י את הקטע הכחול למטה</li>
+          <li>ענה/י על השאלות באנגלית, עברית, או ערבית</li>
+          <li>שאלה 1: כתוב/י שמות או יחסי משפחה</li>
+          <li>שאלה 2: לחץ/י על YES או NO</li>
+        </ul>
+      </div>
       <div class="info-box gold">
         <strong>💬 Think about this:</strong><br>
         Right now, schools are closed because of the security situation. Many of us are at home — with our families — more than usual. Today we will read about <strong>family</strong> and why it is important.
@@ -594,6 +689,14 @@
       </div>
     </div>
     <div class="card">
+      <div class="he-instructions">
+        <div class="he-title">📋 הוראות — אוצר מילים</div>
+        <ul>
+          <li>קרא/י כל מילה באנגלית ואת התרגום</li>
+          <li>נסה/י לומר את המילה בקול רם</li>
+          <li>שאלה 3: בחר/י שתי מילים וכתוב/י משפט עם כל מילה</li>
+        </ul>
+      </div>
       <div class="info-box blue">
         <strong>📌 How to use:</strong> Read each word. Look at the Hebrew translation. Try to say the word aloud.
       </div>
@@ -638,6 +741,15 @@
       </div>
     </div>
     <div class="card">
+      <div class="he-instructions">
+        <div class="he-title">📋 הוראות — קריאה</div>
+        <ul>
+          <li>קרא/י את הטקסט לאט — כל מילה חשובה</li>
+          <li>המילים המודגשות הן מאוצר המילים שלמדנו</li>
+          <li>לחץ/י על מילה מודגשת אם אתה/את צריך/ה תזכורת</li>
+          <li>חשוב/י: האם הטקסט מתאר את המצב שלך עכשיו?</li>
+        </ul>
+      </div>
       <div class="reading-text">
         <p><span class="line-num">1</span>There's nothing in the world more important than <strong>family</strong>.</p>
         <p><span class="line-num">2</span>Each family has its own rules, <strong>habits</strong>, and <strong>traditions</strong>.</p>
@@ -668,6 +780,15 @@
       </div>
     </div>
     <div class="card">
+      <div class="he-instructions">
+        <div class="he-title">📋 הוראות — חלק א׳ — שאלות הבנה</div>
+        <ul>
+          <li>ענה/י על השאלות לפי הטקסט שקראנו</li>
+          <li>שאלות עם ⭐ — מותר לענות בעברית</li>
+          <li>שאלה 4: בחר/י Yes או No ואז הסבר/י במשפט</li>
+          <li>שאלות 5–7: כתוב/י תשובה קצרה — גם משפט אחד מספיק</li>
+        </ul>
+      </div>
 
       <!-- Q: agree/disagree -->
       <div class="question-block">
@@ -731,6 +852,15 @@
       </div>
     </div>
     <div class="card">
+      <div class="he-instructions">
+        <div class="he-title">📋 הוראות — חלק ב׳ — עליך!</div>
+        <ul>
+          <li>שאלה 8: סמן/י את כל הסיבות שנכונות עבורך (אפשר יותר מאחת)</li>
+          <li>שאלה 9: לחץ/י על מילת זמן (כחולה) ואז לחץ/י על המשפט הנכון</li>
+          <li>שאלה 10: כתוב/י מסורת, הרגל, או חוק אחד של המשפחה שלך</li>
+          <li>שאלת בונוס ⭐: אופציונלי — כתוב/י דבר אחד טוב שקרה בגלל הסגר</li>
+        </ul>
+      </div>
 
       <!-- Why at home -->
       <div class="question-block">
@@ -858,46 +988,159 @@
   }, { threshold: 0.08 });
   sections.forEach(s => obs.observe(s));
 
+  // ---- COLLECT ALL ANSWERS ----
+  function collectAnswers() {
+    const data = {};
+    // textareas
+    document.querySelectorAll('textarea').forEach(el => { if (el.id) data[el.id] = el.value; });
+    // yn
+    data['yn1'] = document.getElementById('yn1').value;
+    // blanks
+    for (let i = 0; i < 4; i++) {
+      data['blank' + i] = document.getElementById('blank' + i).dataset.word || '';
+    }
+    // checkboxes
+    data['checkboxes'] = [];
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      if (cb.checked) data['checkboxes'].push(cb.value);
+    });
+    // agree radio
+    const agreeSelected = document.querySelector('#agree_group .choice-item.selected');
+    data['agree_choice'] = agreeSelected ? agreeSelected.querySelector('input').value : '';
+    return data;
+  }
+
+  // ---- RESTORE ALL ANSWERS ----
+  function restoreAnswers(data) {
+    if (!data) return;
+    // textareas
+    document.querySelectorAll('textarea').forEach(el => {
+      if (el.id && data[el.id] !== undefined) el.value = data[el.id];
+    });
+    // yn
+    if (data['yn1']) {
+      document.querySelectorAll('.yn-btn').forEach(b => {
+        if ((data['yn1'] === 'yes' && b.classList.contains('yes')) ||
+            (data['yn1'] === 'no'  && b.classList.contains('no'))) b.classList.add('active');
+      });
+      document.getElementById('yn1').value = data['yn1'];
+    }
+    // blanks
+    for (let i = 0; i < 4; i++) {
+      const word = data['blank' + i];
+      if (word) {
+        const blank = document.getElementById('blank' + i);
+        blank.textContent = word;
+        blank.dataset.word = word;
+        blank.classList.add('filled');
+        document.querySelectorAll('.time-chip').forEach(c => {
+          if (c.textContent === word) { c.classList.add('used'); }
+        });
+      }
+    }
+    // checkboxes
+    if (data['checkboxes']) {
+      document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+        if (data['checkboxes'].includes(cb.value)) {
+          cb.checked = true;
+          cb.closest('.choice-item').classList.add('selected');
+        }
+      });
+    }
+    // agree radio
+    if (data['agree_choice']) {
+      document.querySelectorAll('#agree_group .choice-item').forEach(item => {
+        if (item.querySelector('input').value === data['agree_choice']) {
+          item.classList.add('selected');
+        }
+      });
+    }
+    updateProgress();
+  }
+
+  // ---- AUTO-SAVE TO LOCALSTORAGE ----
+  function autoSave() {
+    try {
+      localStorage.setItem('letsconnect_lesson1', JSON.stringify(collectAnswers()));
+    } catch(e) {}
+  }
+  function autoLoad() {
+    try {
+      const saved = localStorage.getItem('letsconnect_lesson1');
+      if (saved) restoreAnswers(JSON.parse(saved));
+    } catch(e) {}
+  }
+
+  // ---- MANUAL SAVE (download JSON file) ----
+  function saveAnswers() {
+    autoSave();
+    const data = collectAnswers();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'my_answers_lesson1.json';
+    a.click();
+    const s = document.getElementById('saveStatus');
+    s.textContent = '✅ הקובץ הורד!';
+    s.classList.add('show');
+    setTimeout(() => s.classList.remove('show'), 3000);
+  }
+
+  // ---- MANUAL LOAD (upload JSON file) ----
+  function loadAnswers(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = JSON.parse(e.target.result);
+        restoreAnswers(data);
+        const s = document.getElementById('saveStatus');
+        s.textContent = '✅ התשובות נטענו!';
+        s.classList.add('show');
+        setTimeout(() => s.classList.remove('show'), 3000);
+      } catch(err) {
+        alert('שגיאה בטעינת הקובץ. בדוק/י שהקובץ תקין.');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
   // ---- PROGRESS ----
   const TOTAL = 10;
   function updateProgress() {
     let filled = 0;
-    // text areas & inputs
     document.querySelectorAll('textarea[data-points]').forEach(el => { if (el.value.trim().length > 3) filled++; });
-    // yn
     if (document.getElementById('yn1').value) filled++;
-    // blanks
     let filledBlanks = 0;
     for (let i = 0; i < 4; i++) { if (document.getElementById('blank'+i).dataset.word) filledBlanks++; }
     if (filledBlanks >= 3) filled++;
-    // checkboxes
-    const checked = document.querySelectorAll('input[type=checkbox]:checked');
-    if (checked.length > 0) filled++;
-    // agree choice
-    const agreeChosen = document.querySelector('#agree_group .choice-item.selected');
-    if (agreeChosen) filled++;
-
+    if (document.querySelectorAll('input[type=checkbox]:checked').length > 0) filled++;
+    if (document.querySelector('#agree_group .choice-item.selected')) filled++;
     filled = Math.min(filled, TOTAL);
     const pct = Math.round(filled / TOTAL * 100);
     document.getElementById('progressBar').style.width = pct + '%';
     document.getElementById('progressLabel').textContent = filled + ' / ' + TOTAL;
     document.getElementById('progressScore').textContent = pct + '%';
   }
-  document.querySelectorAll('textarea, input[type=text]').forEach(el => el.addEventListener('input', updateProgress));
+  document.querySelectorAll('textarea, input[type=text]').forEach(el => {
+    el.addEventListener('input', () => { updateProgress(); autoSave(); });
+  });
 
   // ---- YES/NO ----
   function selectYN(btn, fieldId, val) {
     btn.closest('.yn-group').querySelectorAll('.yn-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(fieldId).value = val;
-    updateProgress();
+    updateProgress(); autoSave();
   }
 
   // ---- SINGLE CHOICE ----
   function selectChoice(item, groupId) {
     document.querySelectorAll('#' + groupId + ' .choice-item').forEach(i => i.classList.remove('selected'));
     item.classList.add('selected');
-    updateProgress();
+    updateProgress(); autoSave();
   }
 
   // ---- MULTI CHECKBOX ----
@@ -905,10 +1148,10 @@
     const cb = item.querySelector('input[type=checkbox]');
     cb.checked = !cb.checked;
     item.classList.toggle('selected', cb.checked);
-    updateProgress();
+    updateProgress(); autoSave();
   }
 
-  // ---- WORD BANK (drag-and-drop style via tap) ----
+  // ---- WORD BANK ----
   let selectedWord = null;
   function selectWord(chip) {
     if (chip.classList.contains('used')) return;
@@ -921,7 +1164,6 @@
     if (!selectedWord) return;
     const blank = document.getElementById('blank' + idx);
     const oldWord = blank.dataset.word;
-    // return old word to bank
     if (oldWord) {
       document.querySelectorAll('.time-chip').forEach(c => {
         if (c.textContent === oldWord) { c.classList.remove('used'); c.style.opacity = ''; }
@@ -933,7 +1175,7 @@
     selectedWord.classList.add('used');
     selectedWord.style.outline = 'none';
     selectedWord = null;
-    updateProgress();
+    updateProgress(); autoSave();
   }
 
   // ---- SUBMIT ----
@@ -947,31 +1189,28 @@
     if (document.querySelectorAll('input[type=checkbox]:checked').length > 0) filled++;
     if (document.querySelector('#agree_group .choice-item.selected')) filled++;
     filled = Math.min(filled, TOTAL);
-
     const pct = Math.round(filled / TOTAL * 100);
     const card = document.getElementById('resultCard');
     document.getElementById('resultScore').textContent = filled + ' / ' + TOTAL;
-
     if (pct >= 80) {
       document.getElementById('resultEmoji').textContent = '🌟';
-      document.getElementById('resultTitle').textContent = 'Excellent Work!';
-      document.getElementById('resultMsg').textContent = 'You answered most of the questions. Well done! Show your teacher this screen.';
+      document.getElementById('resultTitle').textContent = 'Excellent Work! / עבודה מצוינת!';
+      document.getElementById('resultMsg').textContent = 'You answered most of the questions. Well done! הראה/י למורה את המסך הזה.';
     } else if (pct >= 50) {
       document.getElementById('resultEmoji').textContent = '👍';
-      document.getElementById('resultTitle').textContent = 'Good Job!';
-      document.getElementById('resultMsg').textContent = 'You completed the worksheet. Try to go back and fill in the empty questions.';
+      document.getElementById('resultTitle').textContent = 'Good Job! / כל הכבוד!';
+      document.getElementById('resultMsg').textContent = 'You completed the worksheet. חזור/י לשאלות הריקות ונסה/י למלא אותן.';
     } else {
       document.getElementById('resultEmoji').textContent = '💪';
-      document.getElementById('resultTitle').textContent = 'Keep Going!';
-      document.getElementById('resultMsg').textContent = 'You started well! Try to go back and answer more questions. You can do it!';
+      document.getElementById('resultTitle').textContent = 'Keep Going! / אל תוותר/י!';
+      document.getElementById('resultMsg').textContent = 'התחלת טוב! חזור/י ונסה/י לענות על עוד שאלות. אתה/את יכול/ה!';
     }
-
     card.classList.add('show', 'pop');
     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    // final progress update
     document.getElementById('progressBar').style.width = pct + '%';
     document.getElementById('progressLabel').textContent = filled + ' / ' + TOTAL;
     document.getElementById('progressScore').textContent = pct + '%';
+    autoSave();
   }
 
   function resetWorksheet() {
@@ -987,11 +1226,13 @@
     document.querySelectorAll('.time-chip').forEach(c => { c.classList.remove('used'); c.style.opacity = ''; c.style.outline = 'none'; });
     selectedWord = null;
     document.getElementById('resultCard').classList.remove('show');
+    try { localStorage.removeItem('letsconnect_lesson1'); } catch(e) {}
     updateProgress();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // initial
+  // ---- INIT: auto-load from localStorage ----
+  autoLoad();
   updateProgress();
 </script>
 </body>
